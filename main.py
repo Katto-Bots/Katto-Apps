@@ -136,6 +136,7 @@ async def editor(ctx, *, link, amount=1):
     channel = client.get_channel(750125684566786168)
     yes = "<:9358_yes_tick:748426928347938897>"
     no = "<:9830_no:748426943766069308>"
+    logo = ":licktung:"
 
     embed = discord.Embed(title="**Editor application**", color=0xa890ee)
     embed.add_field(name="Instagram link: ", value=link, inline=False)
@@ -144,25 +145,29 @@ async def editor(ctx, *, link, amount=1):
     msg = await channel.send(embed=embed)
     await msg.add_reaction(yes)
     await msg.add_reaction(no)
+    await msg.add_reaction(logo)
 
 
 @editor.error
 async def editor_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        embed = discord.Embed(title="<:9830_no:748426943766069308>**You have to input your instagram link!**", color=0xa890ee)
+        embed = discord.Embed(title="<:9830_no:748426943766069308>**You have to input your instagram link!**",
+                              color=0xa890ee)
         await ctx.send(embed=embed)
 
 
 @client.command()
 async def artist(ctx, *, link, amount=1):
     await ctx.channel.purge(limit=amount)
-    embed = discord.Embed(title=f"**<:9358_yes_tick:748426928347938897> We successfully recieved your artist application `{ctx.author.name}`!**",
-                          color=0xff35c7)
+    embed = discord.Embed(
+        title=f"**<:9358_yes_tick:748426928347938897> We successfully recieved your artist application `{ctx.author.name}`!**",
+        color=0xff35c7)
     await ctx.send(embed=embed)
 
     channel = client.get_channel(750125684566786168)
     yes = "<:9358_yes_tick:748426928347938897>"
     no = "<:9830_no:748426943766069308>"
+    logo = ":licktung:"
 
     embed = discord.Embed(title="**Artist application**", color=0xff35c7)
     embed.add_field(name="Instagram link: ", value=link, inline=False)
@@ -171,24 +176,29 @@ async def artist(ctx, *, link, amount=1):
     msg = await channel.send(embed=embed)
     await msg.add_reaction(yes)
     await msg.add_reaction(no)
+    await msg.add_reaction(logo)
 
 
 @artist.error
 async def artist_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        embed = discord.Embed(title="<:9830_no:748426943766069308> **You have to input your instagram link!**", color=0xff35c7)
+        embed = discord.Embed(title="<:9830_no:748426943766069308> **You have to input your instagram link!**",
+                              color=0xff35c7)
         await ctx.send(embed=embed)
 
 
 @client.command(pass_context=True)
 @commands.has_permissions(manage_messages=True)
 async def accept(ctx, member: discord.Member):
-    embed = discord.Embed(title=f"<:9358_yes_tick:748426928347938897> **Successfully accepted {member}**", color=discord.Color.green())
+    embed = discord.Embed(title=f"<:9358_yes_tick:748426928347938897> **Successfully accepted {member}**",
+                          color=discord.Color.green())
     await ctx.send(embed=embed)
 
     channel = client.get_channel(717004879947890738)
 
-    embed = discord.Embed(title=f"<:finished_emote_8_1:748969209001803938> **Congratulations {member} for getting accepted!!**", color=0xc70000)
+    embed = discord.Embed(
+        title=f"<:finished_emote_8_1:748969209001803938> **Congratulations {member} for getting accepted!!**",
+        color=0xc70000)
     await channel.send(embed=embed)
 
 
@@ -196,6 +206,27 @@ async def accept(ctx, member: discord.Member):
 async def accept_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(title="**You have to mention someone first!**", color=discord.Color.blurple())
+        await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+@commands.has_permissions(manage_messages=True)
+async def reapp(ctx, member: discord.Member, dovod):
+    embed = discord.Embed(title="**Message has been sent!**", color=discord.Color.green())
+    await ctx.send(embed=embed)
+
+    embed = discord.Embed(title=f"**{member.display_name} your application has been rejected**", color=0xf19f00)
+    embed.set_thumbnail(
+        url="https://cdn.discordapp.com/attachments/748882837897347172/759364040228601917/709642175868043344.gif")
+    embed.add_field(name="**Declined by:**", value=f"{ctx.message.author}", inline=False)
+    embed.add_field(name="**Reason:**", value=dovod, inline=False)
+
+    await ctx.author.send(embed=embed)
+
+@reapp.error
+async def reapp_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        embed = discord.Embed(title="**You have tzo mention someone first!**", color=discord.Color.blurple())
         await ctx.send(embed=embed)
 
 
